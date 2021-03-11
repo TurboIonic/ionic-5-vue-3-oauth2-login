@@ -25,12 +25,12 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: 'tab2',
         component: () => import('@/views/Tab2.vue')
-      },
-      {
-        path: 'tab3',
-        component: () => import('@/views/Tab3.vue')
       }
     ]
+  },
+  {
+    path: '/write',
+    component: () => import('@/views/Write.vue'),
   },
   {
     path: '/login',

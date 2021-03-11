@@ -1,5 +1,5 @@
 <template>
-  <ion-page>
+  <ion-page style="display: flex;justify-content: center;">
     <form @submit.prevent="handleLogin">
       <ion-card>
         <ion-item>
@@ -21,15 +21,17 @@
             <ion-icon slot="end" :icon="logIn"></ion-icon>
           </ion-button>
         </ion-item>
-        <ion-item>
-          <p>Or</p>
-        </ion-item>
-        <ion-item>
-          <ion-button type="button" shape="round" router-link="/signup">
-            Sign Up
-            <ion-icon slot="end" :icon="personAdd"></ion-icon>
-          </ion-button>
-        </ion-item>
+
+<!--todo-->
+<!--        <ion-item>-->
+<!--          <p>Or</p>-->
+<!--        </ion-item>-->
+<!--        <ion-item>-->
+<!--          <ion-button type="button" shape="round" router-link="/signup">-->
+<!--            Sign Up-->
+<!--            <ion-icon slot="end" :icon="personAdd"></ion-icon>-->
+<!--          </ion-button>-->
+<!--        </ion-item>-->
       </ion-card>
     </form>
   </ion-page>

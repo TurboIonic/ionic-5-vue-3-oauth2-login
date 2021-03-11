@@ -14,9 +14,19 @@ class ResponseError extends Error {
 }
 
 const HomeService = {
-    secretArea: async function() {
+    loadArticles: async function(Owner = "Minne") {
         try {
-            return ApiService.get("/secret");
+            return ApiService.get("/articles?Owner=" + Owner);
+        } catch (error) {
+            throw new ResponseError(
+                error.status,
+                error.error.message
+            );
+        }
+    },
+    createArticle: async function(playload: any) {
+        try {
+            return ApiService.post("/article", playload);
         } catch (error) {
             throw new ResponseError(
                 error.status,

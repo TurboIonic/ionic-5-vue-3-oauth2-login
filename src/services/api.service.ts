@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig } from "axios";
 import {store} from '@/store';
 import {TokenService} from "@/services/token.service";
-import {loadingController} from '@ionic/vue';
+import {loadingController, toastController} from '@ionic/vue';
 
 const ApiService = {
     _requestInterceptor: 0,
@@ -14,7 +14,7 @@ const ApiService = {
     setHeader() {
         axios.defaults.headers.common[
             "Authorization"
-            ] = `Bearer ${TokenService.getToken()}`;
+            ] = `"${TokenService.getToken()}"`;
     },
 
     removeHeader() {
@@ -51,6 +51,16 @@ const ApiService = {
 
             return config;
         });
+        axios.interceptors.response.use(
+            response => {
+                loadingController.dismiss().then(r => console.log(r));
+                return response;
+            },
+            async error => {
+                loadingController.dismiss().then(r => console.log(r));
+                throw error;
+            }
+        );
     },
 
     mount401Interceptor() {
@@ -62,21 +72,27 @@ const ApiService = {
             async error => {
                 loadingController.dismiss().then(r => console.log(r));
                 if (error.request.status === 401) {
-                    if (error.config.url.includes("oauth/token")) {
-                        await store.dispatch("auth/signOut");
-                        throw error;
-                    } else {
-                        try {
-                            await store.dispatch("auth/refreshToken");
-                            return this.customRequest({
-                                method: error.config.method,
-                                url: error.config.url,
-                                data: error.config.data
-                            });
-                        } catch (e) {
-                            throw error;
-                        }
-                    }
+                    const toast = await toastController
+                        .create({
+                            message: 'Please login again!',
+                            duration: 2000
+                        })
+                    return toast.present();
+                    // if (error.config.url.includes("oauth/token")) {
+                    //     await store.dispatch("auth/signOut");
+                    //     throw error;
+                    // } else {
+                    //     try {
+                    //         await store.dispatch("auth/refreshToken");
+                    //         return this.customRequest({
+                    //             method: error.config.method,
+                    //             url: error.config.url,
+                    //             data: error.config.data
+                    //         });
+                    //     } catch (e) {
+                    //         throw error;
+                    //     }
+                    // }
                 }
                 throw error;
             }

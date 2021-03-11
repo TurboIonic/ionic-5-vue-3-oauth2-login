@@ -24,20 +24,20 @@ import '@ionic/vue/css/display.css';
 import './theme/variables.css';
 import ApiService from "@/services/api.service";
 import {TokenService} from "@/services/token.service";
-
+const isDev = process.env.NODE_ENV === 'development'
 const app = createApp(App)
     .use(IonicVue)
     .use(router)
     .use(store);
 
-ApiService.init(process.env.VUE_APP_ROOT_API);
+ApiService.init(isDev ? '/api' : process.env.VUE_APP_ROOT_API);
 
 if (TokenService.getToken()) {
   ApiService.setHeader();
   ApiService.mountRequestInterceptor();
   ApiService.mount401Interceptor();
 }
-  
+
 router.isReady().then(() => {
   app.mount('#app');
 });

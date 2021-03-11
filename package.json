@@ -1,5 +1,5 @@
 {
-  "name": "ionicVueOauth",
+  "name": "Vengeful",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -7,7 +7,10 @@
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
     "test:e2e": "vue-cli-service test:e2e",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "dev": "npm run dev:ios",
+    "dev:ios": "ionic cap run ios -l --external",
+    "dev:android": "ionic cap run android -l --external"
   },
   "dependencies": {
     "@capacitor/android": "^2.4.2",

@@ -16,10 +16,26 @@ const getters = {
 };
 
 const actions = {
-    async loadSecretArea(context: any) {
+    async loadArticles(context: any, playload: string) {
         context.commit("dataRequest");
         try {
-            const resp = await HomeService.secretArea();
+            const resp = await HomeService.loadArticles(playload);
+            context.commit("dataSuccess", resp);
+            return resp;
+        } catch (e) {
+            if (e instanceof ResponseError) {
+                context.commit("dataError", {
+                    errorMessage: e.errorMessage,
+                    responseErrorCode: e.errorCode
+                });
+            }
+            return e.message;
+        }
+    },
+    async createArticle(context: any, playload: any) {
+        context.commit("dataRequest");
+        try {
+            const resp = await HomeService.createArticle(playload);
             context.commit("dataSuccess", resp);
             return resp;
         } catch (e) {

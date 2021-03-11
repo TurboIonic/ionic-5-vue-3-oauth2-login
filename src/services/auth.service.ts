@@ -20,26 +20,23 @@ const AuthService = {
         const requestData: AxiosRequestConfig = {
             method: "post",
             headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
-                Authorization: 'Basic ' + btoa(process.env.VUE_APP_CLIENT_ID + ':' + process.env.VUE_APP_CLIENT_SECRET)
+                "Content-Type": "application/json",
             },
-            url: "/oauth/token",
-            data: qs.stringify({
-                "grant_type": "password",
-                username: signInData.username,
-                password: signInData.password
-            })
+            url: "/login",
+            data: {
+                Username: signInData.username,
+                Password: signInData.password
+            }
         };
 
         try {
             const response = await ApiService.customRequest(requestData);
-            TokenService.saveToken(response.data.access_token);
-            TokenService.saveRefreshToken(response.data.refresh_token);
+            TokenService.saveToken(response.data);
             ApiService.setHeader();
 
             ApiService.mount401Interceptor();
 
-            return response.data.access_token;
+            return response.data;
         } catch (error) {
             this.catchError(error);
         }
@@ -79,7 +76,6 @@ const AuthService = {
 
     signOut() {
         TokenService.removeToken();
-        TokenService.removeRefreshToken();
         ApiService.removeHeader();
         ApiService.unmount401Interceptor();
     },
