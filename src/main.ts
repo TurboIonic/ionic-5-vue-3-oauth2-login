@@ -30,7 +30,7 @@ const app = createApp(App)
     .use(router)
     .use(store);
 
-ApiService.init(isDev ? '/api' : process.env.VUE_APP_ROOT_API);
+ApiService.init(isDev ? 'http://localhost:10000' : 'http://139.196.102.55:10000');
 
 if (TokenService.getToken()) {
   ApiService.setHeader();
