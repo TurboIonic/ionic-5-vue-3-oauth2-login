@@ -16,10 +16,10 @@ const getters = {
 };
 
 const actions = {
-    async loadArticles(context: any, playload: string) {
+    async loadArticles(context: any, payload: string) {
         context.commit("dataRequest");
         try {
-            const resp = await HomeService.loadArticles(playload);
+            const resp = await HomeService.loadArticles(payload);
             context.commit("dataSuccess", resp);
             return resp;
         } catch (e) {
@@ -32,10 +32,58 @@ const actions = {
             return e.message;
         }
     },
-    async createArticle(context: any, playload: any) {
+    async createArticle(context: any, payload: any) {
         context.commit("dataRequest");
         try {
-            const resp = await HomeService.createArticle(playload);
+            const resp = await HomeService.createArticle(payload);
+            context.commit("dataSuccess", resp);
+            return resp;
+        } catch (e) {
+            if (e instanceof ResponseError) {
+                context.commit("dataError", {
+                    errorMessage: e.errorMessage,
+                    responseErrorCode: e.errorCode
+                });
+            }
+            return e.message;
+        }
+    },
+    async updateArticle(context: any, payload: any) {
+        context.commit("dataRequest");
+        try {
+            const resp = await HomeService.updateArticle(payload);
+            context.commit("dataSuccess", resp);
+            return resp;
+        } catch (e) {
+            if (e instanceof ResponseError) {
+                context.commit("dataError", {
+                    errorMessage: e.errorMessage,
+                    responseErrorCode: e.errorCode
+                });
+            }
+            return e.message;
+        }
+    },
+    async deleteArticle(context: any, payload: any) {
+        context.commit("dataRequest");
+        try {
+            const resp = await HomeService.deleteArticle(payload);
+            context.commit("dataSuccess", resp);
+            return resp;
+        } catch (e) {
+            if (e instanceof ResponseError) {
+                context.commit("dataError", {
+                    errorMessage: e.errorMessage,
+                    responseErrorCode: e.errorCode
+                });
+            }
+            return e.message;
+        }
+    },
+    async getArticleById(context: any, payload: any) {
+        context.commit("dataRequest");
+        try {
+            const resp = await HomeService.getArticleById(payload);
             context.commit("dataSuccess", resp);
             return resp;
         } catch (e) {

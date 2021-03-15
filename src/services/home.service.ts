@@ -24,9 +24,39 @@ const HomeService = {
             );
         }
     },
-    createArticle: async function(playload: any) {
+    createArticle: async function(payload: any) {
         try {
-            return ApiService.post("/article", playload);
+            return ApiService.post("/article", payload);
+        } catch (error) {
+            throw new ResponseError(
+                error.status,
+                error.error.message
+            );
+        }
+    },
+    updateArticle: async function(payload: any) {
+        try {
+            return ApiService.put("/article", payload);
+        } catch (error) {
+            throw new ResponseError(
+                error.status,
+                error.error.message
+            );
+        }
+    },
+    deleteArticle: async function(payload: any) {
+        try {
+            return ApiService.delete(`/article/${payload}`,);
+        } catch (error) {
+            throw new ResponseError(
+                error.status,
+                error.error.message
+            );
+        }
+    },
+    getArticleById: async function(payload: any) {
+        try {
+            return ApiService.get(`/article/${payload}`);
         } catch (error) {
             throw new ResponseError(
                 error.status,

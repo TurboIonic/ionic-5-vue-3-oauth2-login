@@ -24,7 +24,7 @@
           <ion-refresher-content></ion-refresher-content>
         </ion-refresher>
         <ion-list>
-          <ion-card v-for="item in items" :key="item.id">
+          <ion-card v-for="item in items" :key="item.id" @click="handleEdit(item)">
             <ion-card-header>
               <ion-card-subtitle>{{item.UpdatedTime}}</ion-card-subtitle>
             </ion-card-header>
@@ -113,6 +113,9 @@ export default  {
           event.target.disabled = true;
         }
       }, 500);
+    },
+    handleEdit(item: any) {
+      this.$router.push({ path: '/write',  query:{Id:item.Id} })
     }
   }
 }

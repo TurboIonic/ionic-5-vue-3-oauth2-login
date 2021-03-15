@@ -3,21 +3,21 @@
     <form @submit.prevent="handleLogin">
       <ion-card>
         <ion-item>
-          <h3>Please Sign In!</h3>
+          <h3>请登录!</h3>
         </ion-item>
         <ion-item>
-          <ion-label position="floating">Username</ion-label>
+          <ion-label position="floating">用户名</ion-label>
           <ion-input v-model="form.username" id="username" required></ion-input>
         </ion-item>
 
         <ion-item>
-          <ion-label position="floating">Password</ion-label>
+          <ion-label position="floating">密码</ion-label>
           <ion-input type="password" v-model="form.password" id="password" required></ion-input>
         </ion-item>
 
         <ion-item>
           <ion-button type="submit" shape="round">
-            Sign In
+            登录
             <ion-icon slot="end" :icon="logIn"></ion-icon>
           </ion-button>
         </ion-item>
