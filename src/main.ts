@@ -24,13 +24,15 @@ import '@ionic/vue/css/display.css';
 import './theme/variables.css';
 import ApiService from "@/services/api.service";
 import {TokenService} from "@/services/token.service";
+import { defineCustomElements } from '@ionic/pwa-elements/loader';
+defineCustomElements(window);
 const isDev = process.env.NODE_ENV === 'development'
 const app = createApp(App)
     .use(IonicVue)
     .use(router)
     .use(store);
 
-ApiService.init(isDev ? 'http://localhost:10000' : 'http://139.196.102.55:10000');
+ApiService.init(isDev ? 'http://172.20.10.4:10000' : 'http://139.196.102.55:10000');
 
 if (TokenService.getToken()) {
   ApiService.setHeader();

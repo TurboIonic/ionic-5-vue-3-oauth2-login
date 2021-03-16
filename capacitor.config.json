@@ -1,6 +1,6 @@
 {
-  "appId": "ks.gxk",
-  "appName": "Vengeful",
+  "appId": "cap.gxk",
+  "appName": "HomeChat",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "dist",
@@ -11,7 +11,7 @@
   },
   "cordova": {},
   "server": {
-    "url": "http://10.52.27.233:8100",
+    "url": "http://172.20.10.4:8100",
     "cleartext": true
   }
 }

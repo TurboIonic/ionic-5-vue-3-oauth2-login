@@ -63,6 +63,21 @@ const HomeService = {
                 error.error.message
             );
         }
+    },
+    uploadImage: function(payload: any) {
+
+        const {blobData, name, ext} = payload;
+        const formData = new FormData();
+        formData.append('file', blobData, `myimage.${ext}`);
+        formData.append('name', name);
+        try {
+            return ApiService.post(`/upload`, formData);
+        } catch (error) {
+            throw new ResponseError(
+                error.status,
+                error.error.message
+            );
+        }
     }
 }
 

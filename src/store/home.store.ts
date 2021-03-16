@@ -95,6 +95,22 @@ const actions = {
             }
             return e.message;
         }
+    },
+    async uploadImage(context: any, payload: any) {
+        context.commit("dataRequest");
+        try {
+            const resp = await HomeService.uploadImage(payload);
+            context.commit("dataSuccess", resp);
+            return resp;
+        } catch (e) {
+            if (e instanceof ResponseError) {
+                context.commit("dataError", {
+                    errorMessage: e.errorMessage,
+                    responseErrorCode: e.errorCode
+                });
+            }
+            return e.message;
+        }
     }
 };
 

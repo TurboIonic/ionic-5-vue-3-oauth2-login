@@ -31,6 +31,11 @@
             <ion-card-content>
               {{item.Content}}
             </ion-card-content>
+            <ul class="square" v-if="item.Image">
+              <li class="square-inner" v-for="photo in item.Image.split(',')" :key="photo" >
+                <img :src="photo" v-if="photo"/>
+              </li>
+            </ul>
           </ion-card>
         </ion-list>
         <ion-infinite-scroll
@@ -120,3 +125,42 @@ export default  {
   }
 }
 </script>
+<style>
+  .square{
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    padding-left: 0;
+  }
+  .square-inner{
+    width: calc(98%/ 3); /* calc里面的运算符两边要空格 */
+    height: 0;
+    padding-bottom: calc(98%/ 3);
+    margin-right: 1%;
+    margin-bottom: 1%;
+    overflow: hidden;
+    position: relative;
+  }
+  .square-inner:nth-of-type(3n) {
+    margin-right: 0;
+  }
+  .add-icon {
+    position: absolute;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+  }
+  svg {
+    width: 100%;
+  }
+  img {
+    position: absolute;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+</style>
