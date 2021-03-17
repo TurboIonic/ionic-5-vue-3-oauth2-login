@@ -131,9 +131,9 @@ export function usePhotoGallery() {
       });
     }
 
-    onMounted(loadSaved);
+    // onMounted(loadSaved);
 
-    watch(photos, cachePhotos);
+    // watch(photos, cachePhotos);
 
     return {
         photos,

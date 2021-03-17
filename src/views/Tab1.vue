@@ -2,7 +2,7 @@
   <ion-page>
     <ion-header>
       <ion-toolbar>
-        <ion-title>Mine</ion-title>
+        <ion-title>我的</ion-title>
         <ion-buttons slot="primary">
           <ion-button color="secondary" @click="handleSignOut">
             <ion-icon slot="icon-only" :icon="logOut"></ion-icon>
@@ -13,7 +13,7 @@
     <ion-content :fullscreen="false">
       <ion-header collapse="condense">
         <ion-toolbar>
-          <ion-title size="large">Mine</ion-title>
+          <ion-title size="large">我的</ion-title>
           <ion-button color="secondary" @click="handleWrite" slot="end" size="small">
             <ion-icon slot="icon-only" :icon="cameraOutline"></ion-icon>
           </ion-button>
@@ -55,16 +55,39 @@
 </template>
 
 <script lang="ts">
-import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonIcon, IonButtons, IonButton, IonRefresher, IonRefresherContent, IonList,
-  IonLabel, IonItem, IonInfiniteScroll, IonInfiniteScrollContent, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCardSubtitle } from '@ionic/vue';
-import { logOut, pin, cameraOutline } from 'ionicons/icons';
+  import {
+    IonPage,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonContent,
+    IonIcon,
+    IonButtons,
+    IonButton,
+    IonRefresher,
+    IonRefresherContent,
+    IonList,
+    IonLabel,
+    IonItem,
+    IonInfiniteScroll,
+    IonInfiniteScrollContent,
+    IonCard,
+    IonCardContent,
+    IonCardHeader,
+    IonCardTitle,
+    IonCardSubtitle,
+    IonFabButton, IonFab
+  } from '@ionic/vue';
+import { logOut, pin, cameraOutline, arrowUpOutline } from 'ionicons/icons';
 import {mapActions} from "vuex";
 import { useRouter } from 'vue-router';
+  import { ref } from 'vue';
 
 export default  {
   name: 'Tab1',
   components: { IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonIcon, IonButtons, IonButton, IonRefresher, IonRefresherContent, IonList
-  , IonLabel, IonItem, IonInfiniteScroll, IonInfiniteScrollContent, IonCard, IonCardContent,  IonCardHeader, IonCardTitle, IonCardSubtitle},
+  , IonLabel, IonItem, IonInfiniteScroll, IonInfiniteScrollContent, IonCard, IonCardContent,  IonCardHeader, IonCardTitle, IonCardSubtitle,
+  IonFab,IonFabButton},
   data() {
     return {
       msg: "",
@@ -78,7 +101,8 @@ export default  {
       router,
       logOut,
       pin,
-      cameraOutline
+      cameraOutline,
+      arrowUpOutline,
     };
   },
   methods: {

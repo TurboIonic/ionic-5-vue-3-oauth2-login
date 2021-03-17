@@ -147,6 +147,8 @@
                             }
                         ) : []
                     })
+                } else {
+                    photos.value = []
                 }
             })
             const handleSubmit = () =>{

@@ -32,7 +32,7 @@ const app = createApp(App)
     .use(router)
     .use(store);
 
-ApiService.init(isDev ? 'http://172.20.10.4:10000' : 'http://139.196.102.55:10000');
+ApiService.init(isDev ? 'http://10.52.27.233:10000' : 'http://139.196.102.55:10000');
 
 if (TokenService.getToken()) {
   ApiService.setHeader();

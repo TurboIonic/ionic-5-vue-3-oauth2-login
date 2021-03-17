@@ -2,7 +2,7 @@
   <ion-page>
     <ion-header>
       <ion-toolbar>
-        <ion-title>External</ion-title>
+        <ion-title>家人</ion-title>
         <ion-buttons slot="primary">
           <ion-button color="secondary" @click="handleSignOut">
             <ion-icon slot="icon-only" :icon="logOut"></ion-icon>
@@ -13,7 +13,7 @@
     <ion-content :fullscreen="false">
       <ion-header collapse="condense">
         <ion-toolbar>
-          <ion-title size="large">External</ion-title>
+          <ion-title size="large">家人</ion-title>
         </ion-toolbar>
       </ion-header>
       <ion-content>
@@ -28,6 +28,13 @@
             <ion-card-content>
               {{item.Content}}
             </ion-card-content>
+            <ul class="square" v-if="item.Image">
+              <li class="square-inner" v-for="photo in item.Image.split(',')" :key="photo" >
+                <img :src="photo" v-if="photo"/>
+              </li>
+            </ul>
+            <ion-icon :icon="heart" color="medium"/>
+            <ion-icon :icon="heart" color="danger"/>
           </ion-card>
         </ion-list>
         <ion-infinite-scroll
@@ -49,7 +56,7 @@
 <script lang="ts">
   import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonIcon, IonButtons, IonButton, IonRefresher, IonRefresherContent, IonList,
     IonLabel, IonItem, IonInfiniteScroll, IonInfiniteScrollContent, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCardSubtitle } from '@ionic/vue';
-  import { logOut, pin } from 'ionicons/icons';
+  import { logOut, pin, heart, heartOutline } from 'ionicons/icons';
   import {mapActions} from "vuex";
   import { useRouter } from 'vue-router';
 
@@ -69,7 +76,9 @@
       return {
         router,
         logOut,
-        pin
+        pin,
+        heart,
+        heartOutline
       };
     },
     methods: {
@@ -110,3 +119,42 @@
     }
   }
 </script>
+<style>
+  .square{
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    padding-left: 0;
+  }
+  .square-inner{
+    width: calc(98%/ 3); /* calc里面的运算符两边要空格 */
+    height: 0;
+    padding-bottom: calc(98%/ 3);
+    margin-right: 1%;
+    margin-bottom: 1%;
+    overflow: hidden;
+    position: relative;
+  }
+  .square-inner:nth-of-type(3n) {
+    margin-right: 0;
+  }
+  .add-icon {
+    position: absolute;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+  }
+  svg {
+    width: 100%;
+  }
+  img {
+    position: absolute;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+</style>
