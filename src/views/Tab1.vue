@@ -11,19 +11,16 @@
       </ion-toolbar>
     </ion-header>
     <ion-content :fullscreen="false">
-      <ion-header collapse="condense">
-        <ion-toolbar>
-          <ion-title size="large">我的</ion-title>
-          <ion-button color="secondary" @click="handleWrite" slot="end" size="small">
-            <ion-icon slot="icon-only" :icon="cameraOutline"></ion-icon>
-          </ion-button>
-        </ion-toolbar>
-      </ion-header>
       <ion-content>
         <ion-refresher slot="fixed" @ionRefresh="doRefresh($event)">
           <ion-refresher-content></ion-refresher-content>
         </ion-refresher>
         <ion-list>
+          <ion-header collapse="condense">
+            <ion-toolbar>
+              <ion-title size="large">我的</ion-title>
+            </ion-toolbar>
+          </ion-header>
           <ion-card v-for="item in items" :key="item.id" @click="handleEdit(item)">
             <ion-card-header>
               <ion-card-subtitle>{{item.UpdatedTime}}</ion-card-subtitle>
@@ -32,10 +29,14 @@
               {{item.Content}}
             </ion-card-content>
             <ul class="square" v-if="item.Image">
-              <li class="square-inner" v-for="photo in item.Image.split(',')" :key="photo" >
+              <li class="square-inner" v-for="photo in item.Image.split(',')" :key="photo" @click.stop="handleClickPhoto(photo, item.Image.split(','))">
                 <img :src="photo" v-if="photo"/>
               </li>
             </ul>
+            <ion-chip @click.stop="">
+              <ion-icon :icon="heart" :color="item.LikeNum === 0 ? `medium`: `danger`"/>
+              <ion-label>{{item.LikeNum}}</ion-label>
+            </ion-chip>
           </ion-card>
         </ion-list>
         <ion-infinite-scroll
@@ -49,6 +50,11 @@
                   loading-text="Loading more data...">
           </ion-infinite-scroll-content>
         </ion-infinite-scroll>
+        <ion-fab vertical="bottom" horizontal="center" slot="fixed">
+          <ion-fab-button @click="handleWrite">
+            <ion-icon :icon="cameraOutline"></ion-icon>
+          </ion-fab-button>
+        </ion-fab>
       </ion-content>
     </ion-content>
   </ion-page>
@@ -76,18 +82,19 @@
     IonCardHeader,
     IonCardTitle,
     IonCardSubtitle,
-    IonFabButton, IonFab
+    IonFabButton, IonFab, IonChip, IonModal
   } from '@ionic/vue';
-import { logOut, pin, cameraOutline, arrowUpOutline } from 'ionicons/icons';
-import {mapActions} from "vuex";
+import { logOut, pin, cameraOutline, arrowUpOutline,heart } from 'ionicons/icons';
+  import {mapActions, useStore} from "vuex";
 import { useRouter } from 'vue-router';
   import { ref } from 'vue';
-
-export default  {
+  import ImagePreview from "@/components/ImagePreview.vue";
+  export default  {
   name: 'Tab1',
-  components: { IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonIcon, IonButtons, IonButton, IonRefresher, IonRefresherContent, IonList
+  components: {
+    ImagePreview, IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonIcon, IonButtons, IonButton, IonRefresher, IonRefresherContent, IonList
   , IonLabel, IonItem, IonInfiniteScroll, IonInfiniteScrollContent, IonCard, IonCardContent,  IonCardHeader, IonCardTitle, IonCardSubtitle,
-  IonFab,IonFabButton},
+  IonFab,IonFabButton, IonChip, IonModal, },
   data() {
     return {
       msg: "",
@@ -97,12 +104,19 @@ export default  {
   },
   setup() {
     const router = useRouter();
+    const store = useStore();
+    const handleClickPhoto = (item, list) => {
+      store.dispatch('home/changePreviewList', list)
+      store.dispatch('home/changePreviewStatus', true)
+    }
     return {
       router,
       logOut,
       pin,
       cameraOutline,
       arrowUpOutline,
+      heart,
+      handleClickPhoto
     };
   },
   methods: {
@@ -149,7 +163,7 @@ export default  {
   }
 }
 </script>
-<style>
+<style scoped>
   .square{
     position: relative;
     width: 100%;

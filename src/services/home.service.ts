@@ -78,6 +78,16 @@ const HomeService = {
                 error.error.message
             );
         }
+    },
+    like: function(payload: any) {
+        try {
+            return ApiService.post(`/like/${payload}`, {});
+        } catch (error) {
+            throw new ResponseError(
+                error.status,
+                error.error.message
+            );
+        }
     }
 }
 

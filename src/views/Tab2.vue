@@ -11,16 +11,16 @@
       </ion-toolbar>
     </ion-header>
     <ion-content :fullscreen="false">
-      <ion-header collapse="condense">
-        <ion-toolbar>
-          <ion-title size="large">家人</ion-title>
-        </ion-toolbar>
-      </ion-header>
-      <ion-content>
+      <ion-content >
         <ion-refresher slot="fixed" @ionRefresh="doRefresh($event)">
           <ion-refresher-content></ion-refresher-content>
         </ion-refresher>
         <ion-list>
+          <ion-header collapse="condense">
+            <ion-toolbar>
+              <ion-title size="large">家人</ion-title>
+            </ion-toolbar>
+          </ion-header>
           <ion-card v-for="item in items" :key="item.id">
             <ion-card-header>
               <ion-card-subtitle>{{item.UpdatedTime}}</ion-card-subtitle>
@@ -29,12 +29,14 @@
               {{item.Content}}
             </ion-card-content>
             <ul class="square" v-if="item.Image">
-              <li class="square-inner" v-for="photo in item.Image.split(',')" :key="photo" >
+              <li class="square-inner" v-for="photo in item.Image.split(',')" :key="photo" @click.stop="handleClickPhoto(photo, item.Image.split(','))">
                 <img :src="photo" v-if="photo"/>
               </li>
             </ul>
-            <ion-icon :icon="heart" color="medium"/>
-            <ion-icon :icon="heart" color="danger"/>
+            <ion-chip  @click="handleLike(item)">
+              <ion-icon :icon="heart" :color="item.LikeNum === 0 ? `medium`: `danger`"/>
+              <ion-label>{{item.LikeNum}}</ion-label>
+            </ion-chip>
           </ion-card>
         </ion-list>
         <ion-infinite-scroll
@@ -54,16 +56,37 @@
 </template>
 
 <script lang="ts">
-  import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonIcon, IonButtons, IonButton, IonRefresher, IonRefresherContent, IonList,
-    IonLabel, IonItem, IonInfiniteScroll, IonInfiniteScrollContent, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCardSubtitle } from '@ionic/vue';
+  import {
+    IonPage,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonContent,
+    IonIcon,
+    IonButtons,
+    IonButton,
+    IonRefresher,
+    IonRefresherContent,
+    IonList,
+    IonLabel,
+    IonItem,
+    IonInfiniteScroll,
+    IonInfiniteScrollContent,
+    IonCard,
+    IonCardContent,
+    IonCardHeader,
+    IonCardTitle,
+    IonCardSubtitle,
+    IonChip
+  } from '@ionic/vue';
   import { logOut, pin, heart, heartOutline } from 'ionicons/icons';
-  import {mapActions} from "vuex";
+  import {mapActions, useStore} from "vuex";
   import { useRouter } from 'vue-router';
 
   export default  {
     name: 'Tab2',
     components: { IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonIcon, IonButtons, IonButton, IonRefresher, IonRefresherContent, IonList
-      , IonLabel, IonItem, IonInfiniteScroll, IonInfiniteScrollContent, IonCard, IonCardContent,  IonCardHeader, IonCardTitle, IonCardSubtitle},
+      , IonLabel, IonItem, IonInfiniteScroll, IonInfiniteScrollContent, IonCard, IonCardContent,  IonCardHeader, IonCardTitle, IonCardSubtitle, IonChip},
     data() {
       return {
         msg: "",
@@ -73,17 +96,23 @@
     },
     setup() {
       const router = useRouter();
+      const store = useStore();
+      const handleClickPhoto = (item, list) => {
+        store.dispatch('home/changePreviewList', list)
+        store.dispatch('home/changePreviewStatus', true)
+      }
       return {
         router,
         logOut,
         pin,
         heart,
-        heartOutline
+        heartOutline,
+        handleClickPhoto
       };
     },
     methods: {
       ...mapActions("auth", ["signOut"]),
-      ...mapActions("home", ["loadArticles"]),
+      ...mapActions("home", ["loadArticles", "like"]),
       async handleSignOut() {
         await this.signOut().then(() => {
           this.router.push("/login");
@@ -115,11 +144,16 @@
             event.target.disabled = true;
           }
         }, 500);
+      },
+      handleLike(item) {
+          this.like(item.Id).then(_ => {
+            item.LikeNum ++;
+          })
       }
     }
   }
 </script>
-<style>
+<style scoped>
   .square{
     position: relative;
     width: 100%;

@@ -4,6 +4,9 @@ const state = {
     responseData: "",
     responseErrorCode: 0,
     responseError: "",
+    fullscreenStatus: true,
+    previewList: [],
+    previewStatus: []
 };
 
 const getters = {
@@ -111,6 +114,31 @@ const actions = {
             }
             return e.message;
         }
+    },
+    async like(context: any, payload: any) {
+        context.commit("dataRequest");
+        try {
+            const resp = await HomeService.like(payload);
+            context.commit("dataSuccess", resp);
+            return resp;
+        } catch (e) {
+            if (e instanceof ResponseError) {
+                context.commit("dataError", {
+                    errorMessage: e.errorMessage,
+                    responseErrorCode: e.errorCode
+                });
+            }
+            return e.message;
+        }
+    },
+    changeFullscreenStatus(context, payload) {
+        context.commit("fullscreenStatus", payload)
+    },
+    changePreviewList(context, payload) {
+        context.commit("previewList", payload)
+    },
+    changePreviewStatus(context, payload) {
+        context.commit("previewStatus", payload)
     }
 };
 
@@ -131,6 +159,15 @@ const mutations = {
         }, {errorCode, errorMessage}: any) {
         state.responseError = errorMessage;
         state.responseErrorCode = errorCode;
+    },
+    fullscreenStatus(state, payload) {
+        state.fullscreenStatus = payload
+    },
+    previewList(state, payload) {
+        state.previewList = payload
+    },
+    previewStatus(state, payload) {
+        state.previewStatus = payload
     }
 }
 

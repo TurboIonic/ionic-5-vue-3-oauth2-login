@@ -13,7 +13,7 @@
             </ion-toolbar>
         </ion-header>
         <ion-content class="ion-padding">
-            <ion-textarea placeholder="Enter more information here..." v-model="form.Content"></ion-textarea>
+            <ion-textarea placeholder="写你想写的..." v-model="form.Content"></ion-textarea>
             <ul class="square">
                 <li class="square-inner" v-for="photo in photos" :key="photo.src" @click="showActionSheet(photo)">
                     <img :src="photo.webviewPath" v-if="photo.webviewPath"/>

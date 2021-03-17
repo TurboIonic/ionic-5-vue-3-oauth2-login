@@ -25,6 +25,9 @@ import './theme/variables.css';
 import ApiService from "@/services/api.service";
 import {TokenService} from "@/services/token.service";
 import { defineCustomElements } from '@ionic/pwa-elements/loader';
+
+
+
 defineCustomElements(window);
 const isDev = process.env.NODE_ENV === 'development'
 const app = createApp(App)
