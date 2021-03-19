@@ -6,7 +6,8 @@ const state = {
     responseError: "",
     fullscreenStatus: true,
     previewList: [],
-    previewStatus: []
+    previewIndex: 0,
+    previewStatus: false
 };
 
 const getters = {
@@ -131,11 +132,30 @@ const actions = {
             return e.message;
         }
     },
+    async robot(context: any, payload: any) {
+        context.commit("dataRequest");
+        try {
+            const resp = await HomeService.robot(payload);
+            context.commit("dataSuccess", resp);
+            return resp;
+        } catch (e) {
+            if (e instanceof ResponseError) {
+                context.commit("dataError", {
+                    errorMessage: e.errorMessage,
+                    responseErrorCode: e.errorCode
+                });
+            }
+            return e.message;
+        }
+    },
     changeFullscreenStatus(context, payload) {
         context.commit("fullscreenStatus", payload)
     },
     changePreviewList(context, payload) {
         context.commit("previewList", payload)
+    },
+    changePreviewIndex(context, payload) {
+        context.commit("previewIndex", payload)
     },
     changePreviewStatus(context, payload) {
         context.commit("previewStatus", payload)
@@ -165,6 +185,9 @@ const mutations = {
     },
     previewList(state, payload) {
         state.previewList = payload
+    },
+    previewIndex(state, payload) {
+        state.previewIndex = payload
     },
     previewStatus(state, payload) {
         state.previewStatus = payload

@@ -29,7 +29,7 @@
               {{item.Content}}
             </ion-card-content>
             <ul class="square" v-if="item.Image">
-              <li class="square-inner" v-for="photo in item.Image.split(',')" :key="photo" @click.stop="handleClickPhoto(photo, item.Image.split(','))">
+              <li class="square-inner" v-for="(photo, i) in item.Image.split(',')" :key="photo" @click.stop="handleClickPhoto(photo, i, item.Image.split(','))">
                 <img :src="photo" v-if="photo"/>
               </li>
             </ul>
@@ -82,10 +82,12 @@
   import { logOut, pin, heart, heartOutline } from 'ionicons/icons';
   import {mapActions, useStore} from "vuex";
   import { useRouter } from 'vue-router';
+  import Collage from "@/components/Colllage.vue";
 
   export default  {
     name: 'Tab2',
-    components: { IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonIcon, IonButtons, IonButton, IonRefresher, IonRefresherContent, IonList
+    components: {
+      Collage, IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonIcon, IonButtons, IonButton, IonRefresher, IonRefresherContent, IonList
       , IonLabel, IonItem, IonInfiniteScroll, IonInfiniteScrollContent, IonCard, IonCardContent,  IonCardHeader, IonCardTitle, IonCardSubtitle, IonChip},
     data() {
       return {
@@ -96,9 +98,10 @@
     },
     setup() {
       const router = useRouter();
-      const store = useStore();
-      const handleClickPhoto = (item, list) => {
+      const store = useStore()
+      const handleClickPhoto = (item,i, list) => {
         store.dispatch('home/changePreviewList', list)
+        store.dispatch('home/changePreviewIndex', i)
         store.dispatch('home/changePreviewStatus', true)
       }
       return {
@@ -189,6 +192,37 @@
     right: 0;
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: cover;
+    object-position: center;
+  }
+</style>
+<style scoped>
+  .square{
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    padding-left: 0;
+  }
+  .square-inner{
+    width: calc(98%/ 3); /* calc里面的运算符两边要空格 */
+    height: 0;
+    padding-bottom: calc(98%/ 3);
+    margin-right: 1%;
+    margin-bottom: 1%;
+    overflow: hidden;
+    position: relative;
+  }
+  .square-inner:nth-of-type(3n) {
+    margin-right: 0;
+  }
+  img {
+    position: absolute;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
   }
 </style>

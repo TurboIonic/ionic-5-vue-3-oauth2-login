@@ -88,6 +88,16 @@ const HomeService = {
                 error.error.message
             );
         }
+    },
+    robot: function(payload: any) {
+        try {
+            return ApiService.post(`/robot`, {Info: payload});
+        } catch (error) {
+            throw new ResponseError(
+                error.status,
+                error.error.message
+            );
+        }
     }
 }
 

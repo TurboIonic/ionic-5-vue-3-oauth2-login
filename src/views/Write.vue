@@ -59,7 +59,8 @@
         actionSheetController,
         IonFab,
         IonFabButton,
-        IonIcon
+        IonIcon,
+        toastController
     } from '@ionic/vue';
     import {reactive, onMounted, toRef} from 'vue';
     import {mapActions, useStore} from "vuex";
@@ -151,7 +152,16 @@
                     photos.value = []
                 }
             })
-            const handleSubmit = () =>{
+            const handleSubmit = async () => {
+                if (form.value.Content === '') {
+                    const toast = await toastController
+                        .create({
+                            message: '内容不能为空.',
+                            duration: 2000,
+                            color: "danger"
+                        })
+                    return toast.present();
+                }
                 form.value.Image = photos.value.map(_ => _.webviewPath).join(",")
                 if (Id) {
                     store.dispatch('home/updateArticle', form.value).then(() => {

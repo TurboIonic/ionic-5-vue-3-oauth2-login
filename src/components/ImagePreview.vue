@@ -4,7 +4,7 @@
         <div class="ip-container">
             <ion-slides pager="true" :options="slideOpts">
                 <ion-slide v-for="item in list" :key="item">
-                                <img  :src="item"/>
+                                <img  :src="item" />
                 </ion-slide>
             </ion-slides>
         </div>
@@ -23,16 +23,19 @@
                       // "http://go-img.oss-cn-beijing.aliyuncs.com/44c291a2-38a1-4ef1-afb1-415b3cf2af03",
                   ]
               }
-          }
+          },
+            index: {
+              default: 1
+            }
         },
 
         components: {
             IonSlides,
             IonSlide
         },
-        setup() {
+        setup(props) {
             const slideOpts = {
-                initialSlide: 1,
+                initialSlide: props.index,
                 speed: 400
             };
             return {
@@ -41,7 +44,7 @@
         }
     }
 </script>
-<style>
+<style scoped>
     .ip-wrapper {
         position: fixed;
         left: 0;
@@ -61,5 +64,8 @@
         height: 100%;
         display: flex;
         align-items: center;
+    }
+    .img-grid {
+
     }
 </style>

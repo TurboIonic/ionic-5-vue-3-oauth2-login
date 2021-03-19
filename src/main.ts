@@ -25,17 +25,12 @@ import './theme/variables.css';
 import ApiService from "@/services/api.service";
 import {TokenService} from "@/services/token.service";
 import { defineCustomElements } from '@ionic/pwa-elements/loader';
-
-
-
-defineCustomElements(window);
-const isDev = process.env.NODE_ENV === 'development'
 const app = createApp(App)
     .use(IonicVue)
     .use(router)
     .use(store);
 
-ApiService.init(isDev ? 'http://10.52.27.233:10000' : 'http://139.196.102.55:10000');
+ApiService.init(process.env.VUE_APP_ROOT_API);
 
 if (TokenService.getToken()) {
   ApiService.setHeader();
@@ -45,4 +40,5 @@ if (TokenService.getToken()) {
 
 router.isReady().then(() => {
   app.mount('#app');
+  defineCustomElements(window);
 });

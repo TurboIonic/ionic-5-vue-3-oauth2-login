@@ -3,7 +3,7 @@
     <ion-header>
       <ion-toolbar>
         <ion-title>我的</ion-title>
-        <ion-buttons slot="primary">
+        <ion-buttons slot="end">
           <ion-button color="secondary" @click="handleSignOut">
             <ion-icon slot="icon-only" :icon="logOut"></ion-icon>
           </ion-button>
@@ -26,17 +26,17 @@
               <ion-card-subtitle>{{item.UpdatedTime}}</ion-card-subtitle>
             </ion-card-header>
             <ion-card-content>
-              {{item.Content}}
+              <p>{{item.Content}}</p>
+              <ul class="square" v-if="item.Image">
+                <li class="square-inner" v-for="(photo, i) in item.Image.split(',')" :key="photo" @click.stop="handleClickPhoto(photo, i, item.Image.split(','))">
+                  <img :src="photo" v-if="photo"/>
+                </li>
+              </ul>
+              <ion-chip @click.stop="">
+                <ion-icon :icon="heart" :color="item.LikeNum === 0 ? `medium`: `danger`"/>
+                <ion-label>{{item.LikeNum}}</ion-label>
+              </ion-chip>
             </ion-card-content>
-            <ul class="square" v-if="item.Image">
-              <li class="square-inner" v-for="photo in item.Image.split(',')" :key="photo" @click.stop="handleClickPhoto(photo, item.Image.split(','))">
-                <img :src="photo" v-if="photo"/>
-              </li>
-            </ul>
-            <ion-chip @click.stop="">
-              <ion-icon :icon="heart" :color="item.LikeNum === 0 ? `medium`: `danger`"/>
-              <ion-label>{{item.LikeNum}}</ion-label>
-            </ion-chip>
           </ion-card>
         </ion-list>
         <ion-infinite-scroll
@@ -82,19 +82,20 @@
     IonCardHeader,
     IonCardTitle,
     IonCardSubtitle,
-    IonFabButton, IonFab, IonChip, IonModal
+    IonFabButton, IonFab, IonChip, IonModal, IonThumbnail, IonMenuButton, menuController
   } from '@ionic/vue';
-import { logOut, pin, cameraOutline, arrowUpOutline,heart } from 'ionicons/icons';
+import { logOut, pin, cameraOutline, arrowUpOutline,heart, menuOutline } from 'ionicons/icons';
   import {mapActions, useStore} from "vuex";
 import { useRouter } from 'vue-router';
-  import { ref } from 'vue';
   import ImagePreview from "@/components/ImagePreview.vue";
+  import Collage from "@/components/Colllage.vue";
   export default  {
   name: 'Tab1',
   components: {
+    Collage,
     ImagePreview, IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonIcon, IonButtons, IonButton, IonRefresher, IonRefresherContent, IonList
   , IonLabel, IonItem, IonInfiniteScroll, IonInfiniteScrollContent, IonCard, IonCardContent,  IonCardHeader, IonCardTitle, IonCardSubtitle,
-  IonFab,IonFabButton, IonChip, IonModal, },
+  IonFab,IonFabButton, IonChip, IonModal,IonThumbnail,IonMenuButton },
   data() {
     return {
       msg: "",
@@ -104,9 +105,10 @@ import { useRouter } from 'vue-router';
   },
   setup() {
     const router = useRouter();
-    const store = useStore();
-    const handleClickPhoto = (item, list) => {
+    const store = useStore()
+    const handleClickPhoto = (item,i, list) => {
       store.dispatch('home/changePreviewList', list)
+      store.dispatch('home/changePreviewIndex', i)
       store.dispatch('home/changePreviewStatus', true)
     }
     return {
@@ -116,6 +118,7 @@ import { useRouter } from 'vue-router';
       cameraOutline,
       arrowUpOutline,
       heart,
+      menuOutline,
       handleClickPhoto
     };
   },
@@ -159,7 +162,7 @@ import { useRouter } from 'vue-router';
     },
     handleEdit(item: any) {
       this.$router.push({ path: '/write',  query:{Id:item.Id} })
-    }
+    },
   }
 }
 </script>
@@ -183,22 +186,13 @@ import { useRouter } from 'vue-router';
   .square-inner:nth-of-type(3n) {
     margin-right: 0;
   }
-  .add-icon {
+  .square-inner img {
     position: absolute;
     left: 0;
     right: 0;
     width: 100%;
     height: 100%;
-  }
-  svg {
-    width: 100%;
-  }
-  img {
-    position: absolute;
-    left: 0;
-    right: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
+    object-fit: cover;
+    object-position: center;
   }
 </style>
