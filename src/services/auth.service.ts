@@ -31,7 +31,7 @@ const AuthService = {
 
         try {
             const response = await ApiService.customRequest(requestData);
-            TokenService.saveToken(response.data);
+            TokenService.saveToken(response.data.Token);
             ApiService.setHeader();
 
             ApiService.mount401Interceptor();

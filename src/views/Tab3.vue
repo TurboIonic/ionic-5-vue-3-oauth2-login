@@ -18,18 +18,20 @@
       </ion-header>
       <ion-content>
         <ion-list class="ion-padding-top ion-padding-end">
-          <ion-item>
-            <ion-thumbnail slot="start">
-              <img src="https://images.unsplash.com/photo-1561141249-189f1b37e6e6?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=556&q=80">
-            </ion-thumbnail>
-            <ion-label>hi</ion-label>
-          </ion-item>
-          <ion-item>
-            <ion-thumbnail slot="end">
-              <img src="https://images.unsplash.com/photo-1613988958430-75932db23fbf?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=564&q=80">
-            </ion-thumbnail>
-            <ion-label>hi</ion-label>
-          </ion-item>
+          <div v-for="item in list" :key="item.Id">
+            <ion-item  v-if="item.Username === user.Username">
+              <ion-thumbnail slot="end">
+                <img :src="item.Logo">
+              </ion-thumbnail>
+              <ion-label>{{item.Content}}</ion-label>
+            </ion-item>
+            <ion-item v-else>
+              <ion-thumbnail slot="start">
+                <img :src="item.Logo">
+              </ion-thumbnail>
+              <ion-label>{{item.Content}}</ion-label>
+            </ion-item>
+          </div>
         </ion-list>
         <ion-item class="ion-padding-end">
           <ion-label position="stacked">请输入</ion-label>
@@ -45,15 +47,20 @@ import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonButtons, IonBu
 import ExploreContainer from '@/components/ExploreContainer.vue';
 import {mapActions, useStore} from "vuex";
 import { logOut } from 'ionicons/icons';
-import { onMounted, reactive, ref } from 'vue';
+import { onMounted, reactive, ref, computed } from 'vue';
 import {TokenService} from "@/services/token.service";
 
 export default  {
   name: 'Tab3',
   components: { ExploreContainer, IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonButtons, IonButton, IonIcon, IonList, IonItem, IonThumbnail, IonLabel, IonInput},
   setup() {
-    const ws = new WebSocket(process.env.VUE_APP_WS);
+    const ws = new WebSocket(process.env.VUE_APP_WS + `?Authorization="${TokenService.getToken()}"`);
     const msg = ref("")
+    const list: any = ref([])
+    const store = useStore()
+    const user = computed(() => {
+      return store.state.auth.user;
+    })
     onMounted(
             () => {
               ws.onopen = function()
@@ -64,7 +71,7 @@ export default  {
 
               };
               ws.onmessage = function (evt) {
-                alert(evt.data)
+                list.value.push(JSON.parse(evt.data))
               }
             }
     )
@@ -74,6 +81,8 @@ export default  {
     return {
       logOut,
       msg,
+      list,
+      user,
       handleSendMsg
     }
   },

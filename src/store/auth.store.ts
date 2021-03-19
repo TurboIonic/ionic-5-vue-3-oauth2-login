@@ -6,7 +6,8 @@ const state = {
     accessToken: TokenService.getToken(),
     authenticationErrorCode: 0,
     authenticationError: "",
-    refreshTokenPromise: null
+    refreshTokenPromise: null,
+    user: {}
 };
 
 const getters = {
@@ -102,11 +103,13 @@ const mutations = {
     },
 
     signInSuccess(state: {
+        user: any;
         accessToken: any;
         authenticating: boolean;
-    }, accessToken: any) {
-        state.accessToken = accessToken;
+    }, user: any) {
+        state.accessToken = user.Token;
         state.authenticating = false;
+        state.user = user;
     },
 
     signInError(state: {
