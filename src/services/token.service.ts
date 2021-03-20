@@ -1,6 +1,19 @@
+const USER_KEY = "current_user";
 const TOKEN_KEY = "access_token";
 const REFRESH_TOKEN_KEY = "refresh_token";
+const UserService = {
+    getUser() {
+        return localStorage.getItem(USER_KEY) ? JSON.parse(<string>localStorage.getItem(USER_KEY)) : {};
+    },
 
+    saveUser(currentUser: any) {
+        localStorage.setItem(USER_KEY, JSON.stringify(currentUser));
+    },
+
+    removeUser() {
+        localStorage.removeItem(USER_KEY);
+    },
+}
 const TokenService = {
     getToken() {
         return localStorage.getItem(TOKEN_KEY);
@@ -27,4 +40,4 @@ const TokenService = {
     }
 };
 
-export { TokenService };
+export { TokenService, UserService };

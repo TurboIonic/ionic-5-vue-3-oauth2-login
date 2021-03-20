@@ -1,5 +1,5 @@
 import ApiService from "./api.service";
-import { TokenService } from "./token.service";
+import {TokenService, UserService} from "./token.service";
 import { AxiosRequestConfig } from "axios";
 import qs from "qs";
 
@@ -32,6 +32,7 @@ const AuthService = {
         try {
             const response = await ApiService.customRequest(requestData);
             TokenService.saveToken(response.data.Token);
+            UserService.saveUser(response.data)
             ApiService.setHeader();
 
             ApiService.mount401Interceptor();
@@ -76,6 +77,7 @@ const AuthService = {
 
     signOut() {
         TokenService.removeToken();
+        UserService.removeUser();
         ApiService.removeHeader();
         ApiService.unmount401Interceptor();
     },

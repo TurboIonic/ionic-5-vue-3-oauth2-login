@@ -1,5 +1,5 @@
 import {AuthenticationError, AuthService} from "@/services/auth.service";
-import { TokenService } from "@/services/token.service";
+import {TokenService, UserService} from "@/services/token.service";
 
 const state = {
     authenticating: false,
@@ -7,7 +7,7 @@ const state = {
     authenticationErrorCode: 0,
     authenticationError: "",
     refreshTokenPromise: null,
-    user: {}
+    user: UserService.getUser(),
 };
 
 const getters = {
