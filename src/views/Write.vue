@@ -20,7 +20,7 @@
                 </li>
                     <li                            class="square-inner " v-if="photos.length < 9">
                         <div class="add-icon" @click="takePhoto(CameraSource.Photos)">
-                            <ion-icon slot="start" :src="require('@/assets/add.svg')"></ion-icon>
+                            <ion-icon :icon="addOutline" color="primary"></ion-icon>
                         </div>
                     </li>
             </ul>
