@@ -20,11 +20,7 @@
                 </li>
                     <li                            class="square-inner " v-if="photos.length < 9">
                         <div class="add-icon" @click="takePhoto(CameraSource.Photos)">
-                            <svg
-                                    width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <line x1="0" y1="50" x2="100" y2="50" stroke="#0058a3"/>
-                                <line x1="50" y1="0" x2="50" y2="100" stroke="#0058a3"/>
-                            </svg>
+                            <ion-icon slot="start" :src="require('@/assets/add.svg')"></ion-icon>
                         </div>
                     </li>
             </ul>
@@ -68,7 +64,7 @@
     import {cloneDeep} from 'lodash'
     import {usePhotoGallery} from "@/composables/usePhotoGallery";
     import {Photo} from "@/contracts/interface";
-    import { camera, trash, close } from 'ionicons/icons';
+    import { camera, trash, close, addOutline } from 'ionicons/icons';
     import {CameraSource} from "@capacitor/core";
     const DEFAULT_FORM = cloneDeep({
         Content: '',
@@ -197,7 +193,8 @@
                 camera,
                 takePhoto,
                 showActionSheet,
-                CameraSource
+                CameraSource,
+                addOutline
             };
         },
     }
@@ -229,7 +226,7 @@
         width: 100%;
         height: 100%;
     }
-    .add-icon svg {
+    .add-icon ion-icon {
         width: 100%;
         height: 100%;
     }
