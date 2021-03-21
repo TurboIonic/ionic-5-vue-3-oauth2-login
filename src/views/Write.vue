@@ -18,12 +18,12 @@
                 <li class="square-inner" v-for="photo in photos" :key="photo.src" @click="showActionSheet(photo)">
                     <img :src="photo.webviewPath" v-if="photo.webviewPath"/>
                 </li>
-                    <li                            class="square-inner " v-if="photos.length < 6">
+                    <li                            class="square-inner " v-if="photos.length < 9">
                         <div class="add-icon" @click="takePhoto(CameraSource.Photos)">
                             <svg
                                     width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <line x1="0" y1="50" x2="100" y2="50" stroke="black"/>
-                                <line x1="50" y1="0" x2="50" y2="100" stroke="black"/>
+                                <line x1="0" y1="50" x2="100" y2="50" stroke="#0058a3"/>
+                                <line x1="50" y1="0" x2="50" y2="100" stroke="#0058a3"/>
                             </svg>
                         </div>
                     </li>
@@ -202,7 +202,7 @@
         },
     }
 </script>
-<style>
+<style scoped>
     .square{
         position: relative;
         width: 100%;
@@ -229,15 +229,17 @@
         width: 100%;
         height: 100%;
     }
-    svg {
+    .add-icon svg {
         width: 100%;
+        height: 100%;
     }
-    img {
+    .square-inner img {
         position: absolute;
         left: 0;
         right: 0;
         width: 100%;
         height: 100%;
-        object-fit: contain;
+        object-fit: cover;
+        object-position: center;
     }
 </style>

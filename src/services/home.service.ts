@@ -98,6 +98,16 @@ const HomeService = {
                 error.error.message
             );
         }
+    },
+    loadMessages: function(payload: string) {
+        try {
+            return ApiService.get("/messages");
+        } catch (error) {
+            throw new ResponseError(
+                error.status,
+                error.error.message
+            );
+        }
     }
 }
 

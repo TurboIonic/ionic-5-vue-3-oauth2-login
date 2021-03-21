@@ -106,7 +106,7 @@ export function usePhotoGallery() {
             imageName: fileName,
             ext: image.format
         }).then((value) => {
-            photos.value = [{webviewPath: `http://${value.data}`, filepath: fileName}, ...photos.value];
+            photos.value = [{webviewPath: `https://${value.data}`, filepath: fileName}, ...photos.value];
         })
         // const savedFileImage = await savePicture(cameraPhoto, fileName);
         // photos.value = [{webviewPath: blobData, filepath: fileName}, ...photos.value];

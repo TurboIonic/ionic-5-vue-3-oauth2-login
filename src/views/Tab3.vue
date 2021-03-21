@@ -21,7 +21,7 @@
           <div v-for="item in list" :key="item.Id">
             <ion-item  v-if="item.Owner === user.Username">
               <ion-thumbnail slot="end">
-                <img :src="item.Logo">
+                <ion-img :src="item.Logo" ></ion-img>
               </ion-thumbnail>
               <ion-label>
                 <ion-text color="dark">
@@ -31,7 +31,7 @@
             </ion-item>
             <ion-item v-else>
               <ion-thumbnail slot="start">
-                <img :src="item.Logo">
+                <ion-img :src="item.Logo"></ion-img>
               </ion-thumbnail>
               <ion-label>
                 <ion-text color="dark">
@@ -69,18 +69,18 @@
     IonThumbnail,
     IonLabel,
     IonInput,
-    IonText, IonFooter, IonTextarea, IonBackdrop
+    IonText, IonFooter, IonTextarea, IonBackdrop, IonImg
   } from '@ionic/vue';
 import ExploreContainer from '@/components/ExploreContainer.vue';
 import {mapActions, useStore} from "vuex";
 import { logOut } from 'ionicons/icons';
-import { onMounted, reactive, ref, computed } from 'vue';
+import { onMounted, reactive, ref, computed, nextTick } from 'vue';
 import {TokenService} from "@/services/token.service";
 import ReconnectingWebSocket from 'reconnecting-websocket';
 
 export default  {
   name: 'Tab3',
-  components: { ExploreContainer, IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonButtons, IonButton, IonIcon, IonList, IonItem, IonThumbnail, IonLabel, IonInput, IonText, IonFooter, IonTextarea,IonBackdrop },
+  components: { ExploreContainer, IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonButtons, IonButton, IonIcon, IonList, IonItem, IonThumbnail, IonLabel, IonInput, IonText, IonFooter, IonTextarea,IonBackdrop,IonImg },
   setup(props, context) {
     const ws = new ReconnectingWebSocket(process.env.VUE_APP_WS + `?Authorization="${TokenService.getToken()}"`);
     const msg = ref("")
@@ -105,6 +105,12 @@ export default  {
                 msg.value = ''
                 listRef.value.$el.scrollToBottom(1000)
               }
+              store.dispatch('home/loadMessages').then(_ => {
+                list.value = _.data ?? []
+                setTimeout(() => {
+                  listRef.value.$el.scrollToBottom(1000)
+                }, 100)
+              })
             }
     )
     const handleSendMsg = () => {
@@ -129,3 +135,6 @@ export default  {
   }
 }
 </script>
+<style scoped>
+
+</style>

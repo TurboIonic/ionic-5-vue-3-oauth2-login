@@ -20,6 +20,22 @@ const getters = {
 };
 
 const actions = {
+    async loadMessages(context: any, payload: string) {
+        context.commit("dataRequest");
+        try {
+            const resp = await HomeService.loadMessages(payload);
+            context.commit("dataSuccess", resp);
+            return resp;
+        } catch (e) {
+            if (e instanceof ResponseError) {
+                context.commit("dataError", {
+                    errorMessage: e.errorMessage,
+                    responseErrorCode: e.errorCode
+                });
+            }
+            return e.message;
+        }
+    },
     async loadArticles(context: any, payload: string) {
         context.commit("dataRequest");
         try {

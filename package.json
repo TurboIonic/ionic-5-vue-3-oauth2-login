@@ -4,15 +4,14 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve --mode development",
-    "build": "vue-cli-service build && capacitor copy ios",
+    "build": "vue-cli-service build && npx cap sync",
     "test:unit": "vue-cli-service test:unit",
     "test:e2e": "vue-cli-service test:e2e",
     "lint": "vue-cli-service lint",
     "dev": "npm run dev:ios",
     "dev:ios": "ionic cap run ios -l --external",
     "dev:android": "ionic cap run android -l --external",
-    "icon:ios": "cordova-res ios --skip-config --copy",
-    "icon:android": "cordova-res android --skip-config --copy"
+    "resources:ios": "cordova-res ios && node scripts/resources.js"
   },
   "dependencies": {
     "@capacitor/android": "^2.4.2",
